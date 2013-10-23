@@ -1,4 +1,4 @@
-
+ 
 //(function(){
 String.prototype.hashCode = function(){// From http://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery
     var hash = 0, i, char;
@@ -688,10 +688,8 @@ var switchToProblem=function(problemNumber){
             graders[currentProblem].startTime=(new Date()).valueOf();
             graders[currentProblem].eventHash=newHash();
             if(currentProblem>0){
-	      
-	       
                 $.ajax({
-		    "url":"http://www.kapparate.com/coder/event",
+                    "url":"//www.kapparate.com/coder/event",
                     "type":"POST",
                     "data":{
                         "event":"startproblem",
@@ -914,17 +912,13 @@ var init=function(data){
     .mouseleave(function(){
         timerElement.stop().animate({"height":"50px"},300,expoEaseOut);
     })
-    
-
-    
-    
 
     switchToProblem(0);
     updateTimer();
 }
-var problemListURL = "http://www.kittybyte.com/coder/kittyproblems";
+var problemListURL = "//www.kittybyte.com/coder/kittyproblems";
 if(typeof globalPsetID !== 'undefined') {
-    problemListURL = "http://www.kittybyte.com/students/problemlist/"+globalPsetID;
+    problemListURL = "//www.kittybyte.com/trial/problemlist/"+globalPsetID;
 }
 $.ajax({
     "url":problemListURL,
@@ -953,4 +947,3 @@ $(document).unbind('keydown').bind('keydown', function (event) {
 
 
 //})();
-
