@@ -688,8 +688,10 @@ var switchToProblem=function(problemNumber){
             graders[currentProblem].startTime=(new Date()).valueOf();
             graders[currentProblem].eventHash=newHash();
             if(currentProblem>0){
+	      
+	       
                 $.ajax({
-                    "url":"//www.kapparate.com/coder/event",
+		    "url":"http://www.kapparate.com/coder/event",
                     "type":"POST",
                     "data":{
                         "event":"startproblem",
@@ -912,13 +914,17 @@ var init=function(data){
     .mouseleave(function(){
         timerElement.stop().animate({"height":"50px"},300,expoEaseOut);
     })
+    
+
+    
+    
 
     switchToProblem(0);
     updateTimer();
 }
-var problemListURL = "//www.kittybyte.com/coder/kittyproblems";
+var problemListURL = "http://www.kittybyte.com/coder/kittyproblems";
 if(typeof globalPsetID !== 'undefined') {
-    problemListURL = "//www.kittybyte.com/trial/problemlist/"+globalPsetID;
+    problemListURL = "http://www.kittybyte.com/students/problemlist/"+globalPsetID;
 }
 $.ajax({
     "url":problemListURL,
