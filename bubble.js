@@ -76,7 +76,7 @@ var Grader=function(inputFunction,submitURL,psetid,problemid,psetproblemid){
     this.loadVelocity=0;
     this.lastCheck=false;
     //Variables for state
-    this.currentOutput="Click to check";
+    this.currentOutput="Click to check or Ctrl+Enter";
     this.cases=[];
     this.currentCase=0;
     this.icon="check";
