@@ -1,13 +1,13 @@
-
+ 
 @font-face{
     font-family:"Roboto";
     font-weight:300;
-    src:url("Roboto-Light.ttf");
+    src:url("http://kittybyte.com/grader/Roboto-Light.ttf");
 }
 @font-face{
     font-family:"Roboto";
     font-weight:100;
-    src:url("Roboto-Thin.ttf");
+    src:url("http://kittybyte.com/grader/Roboto-Thin.ttf");
 }
 body{
     font-family:"Roboto",Arial,Sans-serif;
@@ -264,4 +264,3 @@ pre{
     background-color: #FFAA00;
     width:0%;
 }
-

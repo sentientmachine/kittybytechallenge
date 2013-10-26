@@ -76,7 +76,7 @@ var Grader=function(inputFunction,submitURL,psetid,problemid,psetproblemid){
     this.loadVelocity=0;
     this.lastCheck=false;
     //Variables for state
-    this.currentOutput="Click to check";
+    this.currentOutput="Click or ctrl-enter to check.";
     this.cases=[];
     this.currentCase=0;
     this.icon="check";
@@ -322,13 +322,17 @@ var casesMouseMove=function(event){
         currentGrader.updateCaseDetails();
     }
 }
+
 var savePset=function(graders) {
     if(!loggedIn) {
-        alert("Not Logged In!");
+        $('.statusMessage').text("Please login or register for an account to save submission.");
+        $('.statusMessage').css({"opacity" : 1, "font-weight" : "bold", "color" : "blue"});
+        $('.statusMessage').fadeTo(6500, 0);
         return;
     }
     var psetID = graders[0].psetID;
-    var saveURL="//www.kittybyte.com/students/savepset/"+psetID;
+    //var saveURL="//www.kittybyte.com/students/savepset/"+psetID;
+    var saveURL="//www.kittybyte.com/trial/savepset/"+psetID;
     var data = {};
     for(var i = 0 ; i < graders.length; i++) {
         if(currentProblem == i && currentProblem != null){
@@ -340,11 +344,16 @@ var savePset=function(graders) {
           url: saveURL,
           data: data,
           type: 'post',
-          success: function(data) {
-                    }
+          success: showSaveMessageAndFadeOut()
     });
 }
+var showSaveMessageAndFadeOut=function(){
+    $('.statusMessage').text("Saving Code Submission successful.");
+    $('.statusMessage').css({"opacity" : 1, "font-weight" : "bold", "color" : "blue"});
+    $('.statusMessage').fadeTo(4500, 0);
+}
 var checkProblem=function(grader){
+    savePset(graders);
     grader.loadVelocity=-grader.initialSpinback;
     grader.velocity+=grader.impulse;
     if(grader.lastCheck==false||((new Date()).valueOf()-grader.lastCheck)>grader.duplicateDelay){
@@ -436,7 +445,7 @@ var serverData=function(grader,serverData){
             case "mismatch":
                 switch(serverData.status){
                     case "correct":
-                        grader.updateIcon("green","check")
+                        grader.updateIcon("green","check") 
                         grader.currentOutput="All test cases pass. Good job!";
                         grader.updateText("prompt");
                         //Added
@@ -688,10 +697,8 @@ var switchToProblem=function(problemNumber){
             graders[currentProblem].startTime=(new Date()).valueOf();
             graders[currentProblem].eventHash=newHash();
             if(currentProblem>0){
-	      
-	       
                 $.ajax({
-		    "url":"http://www.kapparate.com/coder/event",
+                    "url":"http://www.kapparate.com/coder/event",
                     "type":"POST",
                     "data":{
                         "event":"startproblem",
@@ -744,7 +751,7 @@ var switchToProblem=function(problemNumber){
             $(".answerlink").show();
             $(".answerlink").html($("<a>Top Answers</a>").attr("href","http://www.kittybyte.com/coder/kittyanswers/"+problemid));
         }
-        else if(currentProblem>0) {
+        else if(currentProblem>0 && !loggedIn) {
             $(".answerlink").show();
             $(".answerlink").html("<a href=\"http://www.kittybyte.com/register/\">Register for an account</a> to receive email updates.");
         }else {
@@ -757,11 +764,18 @@ var updateProblemSwitcher=function(){
     problemSwitcher.find("li").each(function(index){
         var borderColor="transparent";
         if(graders[index].successful){
-            borderColor=colorDef["green"];
+            borderColor=colorDef["green"]; //changed green to blue
         }
         else if(graders[index].viewed){
             borderColor="#AAAAFF";
         }
+        //else if (){
+           //get cookie for this problem + index 'problemswitcherstate1'
+           //if no cookie exists, use the default
+           //if cookie does exist, colorize it that way.
+           //What if the user logs out, it still reads the cookie?  (don't read cookie unless logged in).
+           //What if user logs out and logs in as new user? (the cookie should have the username). 
+        //}
         $(this).css("border-left-color",borderColor)
             .removeClass("active");
         if(index==currentProblem){
@@ -863,6 +877,7 @@ var unescapeObject = function(object){
     }
     return object;
 }
+
 var problems=[];
 var init=function(data){
     dat=unescapeObject(data);
@@ -892,6 +907,11 @@ var init=function(data){
       name: 'test',
       bindKey: {win: 'Ctrl-Shift-S',  mac: 'Command-Shift-S'},
       exec: function(editor) {
+          
+          if (!loggedIn){
+            alert("Please Register for an account to save submission.");
+            return;
+          }
           savePset(graders)
         },
     });
@@ -914,18 +934,16 @@ var init=function(data){
     .mouseleave(function(){
         timerElement.stop().animate({"height":"50px"},300,expoEaseOut);
     })
-    
-
-    
-    
 
     switchToProblem(0);
     updateTimer();
 }
 var problemListURL = "http://www.kittybyte.com/coder/kittyproblems";
 if(typeof globalPsetID !== 'undefined') {
-    problemListURL = "http://www.kittybyte.com/students/problemlist/"+globalPsetID;
+alert("globalPsetID: " + globalPsetID);
+    problemListURL = "http://www.kittybyte.com/trial/problemlist/"+globalPsetID;
 }
+//alert("ok calling init");
 $.ajax({
     "url":problemListURL,
     "dataType":"JSON",
