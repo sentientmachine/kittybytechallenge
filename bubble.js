@@ -325,9 +325,7 @@ var casesMouseMove=function(event){
 
 var savePset=function(graders) {
     if(!loggedIn) {
-        $('.statusMessage').text("Please login or register for an account to save submission.");
-        $('.statusMessage').css({"opacity" : 1, "font-weight" : "bold", "color" : "blue"});
-        $('.statusMessage').fadeTo(6500, 0);
+        showMessageFadeInOut("Please login or register for an account to save submission.");
         return;
     }
     var psetID = graders[0].psetID;
@@ -344,13 +342,14 @@ var savePset=function(graders) {
           url: saveURL,
           data: data,
           type: 'post',
-          success: showSaveMessageAndFadeOut()
+          success: showMessageFadeInOut("Saving code submission successful.")
     });
 }
-var showSaveMessageAndFadeOut=function(){
-    $('.statusMessage').text("Saving Code Submission successful.");
-    $('.statusMessage').css({"opacity" : 1, "font-weight" : "bold", "color" : "blue"});
-    $('.statusMessage').fadeTo(4500, 0);
+var showMessageFadeInOut=function(message){
+    $('#statusMessage').text(message);
+    $('#statusMessage').css({"opacity" : 0, "font-weight" : "bold", "color" : "teal"});
+    $('#statusMessage').fadeTo(1000, 1);
+    $('#statusMessage').fadeTo(2500, 0);
 }
 var checkProblem=function(grader){
     savePset(graders);
@@ -935,9 +934,25 @@ var init=function(data){
         timerElement.stop().animate({"height":"50px"},300,expoEaseOut);
     })
 
+    if (!loggedIn)
+        setRightHeaderToLoginState(); 
+    else
+        setRightHeaderToSignedInState();
+
     switchToProblem(0);
     updateTimer();
 }
+var setRightHeaderToLoginState=function(){
+    //Sets the rightHeader to contain the sign up and login buttons.
+    $("#signUpLoginHeader").html("<a href='http://www.kittybyte.com/register'>sign up</a>" + 
+        "&nbsp;&nbsp;&nbsp;<a href='https://www.kittybyte.com/login'>log in</a>");
+}
+var setRightHeaderToSignedInState=function(){
+    //Sets the rightHeader to contain the dashboard link.
+    $("#signUpLoginHeader").html("<a href='http://www.kittybyte.com'>dashboard</a>&nbsp;&nbsp;&nbsp;" +
+        "<a href='http://www.kittybyte.com/logout'>sign out</a>");
+}
+
 var problemListURL = "http://www.kittybyte.com/coder/kittyproblems";
 if(typeof globalPsetID !== 'undefined') {
 alert("globalPsetID: " + globalPsetID);

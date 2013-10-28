@@ -22,9 +22,31 @@ body{
 #codebox {
     display: none;
 }
+.customHeader{
+    background-color:#EEEEEE;
+    overflow:hidden;
+}
+.leftHeader{
+    float:left;
+    background-color:inherit;
+}
+.rightHeader{
+    float:right;
+    background-color:transparent;
+    width:415px;
+}
+
+#signUpLoginHeader a{
+    text-decoration: none;
+    font-size:small;
+}
+#signUpLoginHeader a:hover{
+    text-decoration:underline;
+}
+
 #problem{
-    position: absolute;  
-    right: 0;  
+    position: absolute;
+    right: 0;
     margin: 20px 20px 20px 0;  
     width: 400px;  
     top: 0;
