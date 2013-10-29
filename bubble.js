@@ -428,6 +428,14 @@ var checkProblem=function(grader){
     })
     grader.inputFunction()
 }
+var playSound=function(soundToPlay){
+    if (soundToPlay.trim()=="unit_tests_passed".trim()){
+        new Audio("kbsounds/unit_tests_passed.ogg").play();
+    }
+    else if (soundToPlay==="unit_tests_failed"){
+        new Audio("kbsounds/unit_tests_failed.ogg").play();
+    }
+}
 var switchToNextProblemTimer=0;
 //Server data returned for this element
 var serverData=function(grader,serverData){
@@ -444,6 +452,7 @@ var serverData=function(grader,serverData){
             case "mismatch":
                 switch(serverData.status){
                     case "correct":
+                        playSound("unit_tests_passed");
                         grader.updateIcon("green","check") 
                         grader.currentOutput="All test cases pass. Good job!";
                         grader.updateText("prompt");
@@ -456,6 +465,7 @@ var serverData=function(grader,serverData){
                         grader.successful=true;
                         break;
                     case "mismatch":
+                        playSound("unit_tests_failed");
                         grader.updateIcon("yellow","unequal")
                         grader.currentOutput="Returned the wrong result";
                         grader.updateText("prompt");
@@ -498,6 +508,7 @@ var serverData=function(grader,serverData){
                 }];
                 break;
             case "compile":
+                playSound("unit_tests_failed");
                 grader.updateIcon("red","cross")
                 grader.currentOutput="Submission cannot compile";
                 grader.updateText("prompt");
